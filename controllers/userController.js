@@ -90,10 +90,15 @@ exports.login = async (req, res, next) => {
 exports.search = async (req, res) => {
   try {
     const { username, email } = req.body;
-    if (!username && !email) {
+    const reqUser = req.users;
+    if (!username && !email && !reqUser) {
       res.status(403).json({
         message: "Either username or email is required to search",
       });
+    }
+    if (reqUser) {
+      console.log(reqUser);
+      return res.status(201).json({ user: reqUser });
     }
     const user = await User.findOne({
       $or: [{ username }, { email }],
