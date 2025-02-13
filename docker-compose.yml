@@ -1,0 +1,30 @@
+version: "1.2"
+
+services:
+  backend:
+    build: .
+    container_name: user-register
+    ports:
+      - "8070:8070"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/users
+      - JWT_SECRET=thisIsSecret
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:

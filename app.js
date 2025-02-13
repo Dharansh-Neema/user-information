@@ -26,7 +26,7 @@ app.use(morgan("tiny"));
 //User routes
 const user = require("./routers/userRouter");
 app.use("/api/v1", user);
-PORT = process.env.PORT || 8030;
+PORT = process.env.PORT || 8070;
 app.listen(PORT, () => {
   console.log(`Server is running at: ${PORT}`);
 });
