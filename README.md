@@ -67,12 +67,24 @@ This will start the API on **http://localhost:8070**
 
 ## 📌 **API Endpoints**
 
-| Endpoint              | Method   | Description                                 |
-| --------------------- | -------- | ------------------------------------------- |
-| `/api/users/register` | **POST** | Register a new user                         |
-| `/api/users/login`    | **POST** | Login and receive JWT token                 |
-| `/api/users/search`   | **POST** | Search for a user (Requires Authentication) |
+| Endpoint            | Method   | Description                                 |
+| ------------------- | -------- | ------------------------------------------- |
+| `/api/users/signup` | **POST** | Register a new user                         |
+| `/api/users/login`  | **POST** | Login and receive JWT token                 |
+| `/api/users/search` | **POST** | Search for a user (Requires Authentication) |
 
 ---
 
 ## 📷 **Postman API Testing Examples**
+
+### 1. Signup
+
+![signup](https://github.com/Dharansh-Neema/user-information/blob/main/utils/images/Signup.png)
+
+### 2. Login
+
+![login](https://github.com/Dharansh-Neema/user-information/blob/main/utils/images/LOGIN.png)
+
+### 3. Search
+
+![search](https://github.com/Dharansh-Neema/user-information/blob/main/utils/images/Search.png)
