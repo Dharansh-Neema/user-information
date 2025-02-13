@@ -16,6 +16,9 @@ app.use(
 );
 app.use(express.json());
 
+//MongoDB connection
+const connectWithDB = require("./db/db");
+connectWithDB();
 // Morgan logger
 const morgan = require("morgan");
 app.use(morgan("tiny"));
