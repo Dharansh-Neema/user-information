@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const User = require("../model/user.js");
 const cookieToken = require("../utils/token.js");
 
@@ -33,14 +33,12 @@ exports.register = async (req, res, next) => {
         .status(400)
         .json({ error: "Username or Email already exists" });
     }
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     //save the user
     const newUser = new User({
       username,
       email,
-      password: hashedPassword,
+      password,
       fullName,
       gender,
       dateOfBirth,
@@ -53,4 +51,34 @@ exports.register = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
+};
+
+// Login end-point
+
+exports.login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      res.status(404).json({
+        message: "Username and password is required",
+      });
+    }
+    const user = await User.findOne({ username });
+    if (!user) {
+      res.status(404).json({
+        message: "Invalid username or password",
+      });
+    }
+    const comparePassword = await bcrypt.compare(password, user.password);
+    console.log(comparePassword);
+    console.log(user.password);
+    console.log(password);
+    if (!comparePassword) {
+      res.status(404).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    cookieToken(user, res);
+  } catch {}
 };
