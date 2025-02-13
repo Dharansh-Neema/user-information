@@ -49,7 +49,9 @@ exports.register = async (req, res, next) => {
     // assign token and save it to cookies
     cookieToken(newUser, res);
   } catch (err) {
-    res.status(500).json({ message: "Server Error", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Server Error while signing in", error: err.message });
   }
 };
 
@@ -70,9 +72,6 @@ exports.login = async (req, res, next) => {
       });
     }
     const comparePassword = await bcrypt.compare(password, user.password);
-    console.log(comparePassword);
-    console.log(user.password);
-    console.log(password);
     if (!comparePassword) {
       res.status(404).json({
         message: "Invalid username or password",
@@ -80,5 +79,34 @@ exports.login = async (req, res, next) => {
     }
 
     cookieToken(user, res);
-  } catch {}
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Server Error while logging in", error: err.message });
+  }
+};
+
+//Search end-point
+exports.search = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+    if (!username && !email) {
+      res.status(403).json({
+        message: "Either username or email is required to search",
+      });
+    }
+    const user = await User.findOne({
+      $or: [{ username }, { email }],
+    }).select("-password"); // Exclude password from response
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(201).json({ user });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Server Error while searching", error: err.message });
+  }
 };
